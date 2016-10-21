@@ -13,4 +13,6 @@ TODO:
  - [ ] Make it a single include to switch.
  - [ ] Make tests work with this code.
  - [ ] Write examples for using it.
+ - [ ] Write redux resolver for injecting events.
+ 
  

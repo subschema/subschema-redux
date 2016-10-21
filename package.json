@@ -1,0 +1,25 @@
+{
+  "name": "subschema-redux",
+  "version": "0.0.1",
+  "description": "Redux for Subschema",
+  "main": "./index.js",
+  "scripts": {
+    "test": "npm run mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subschema/subschema-redux.git"
+  },
+  "keywords": [
+    "Subschema",
+    "Redux",
+    "Forms",
+    "React"
+  ],
+  "author": "Justin Spears <speajus@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subschema/subschema-redux/issues"
+  },
+  "homepage": "https://github.com/subschema/subschema-redux#readme"
+}
