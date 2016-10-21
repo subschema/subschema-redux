@@ -6,14 +6,15 @@ import castPath from 'lodash/_castPath'
 import _middleware from './middleware';
 import _reducers from './reducers';
 import {update, validate, submit, state, error} from './events';
-import {
-    path as tpath,
+import  tutils from 'subschema/../tutils';
+import  eventable from 'subschema/../eventable';
+
+const {
     noop,
     push,
     FREEZE_ARR
-} from "../tutils";
-import eventable from "../eventable";
-
+} = tutils;
+const tpath  = tutils.path;
 
 /**
  * Value manager listens and changes values on the objects.
@@ -25,7 +26,6 @@ import eventable from "../eventable";
  * @constructor
  */
 export default function ReduxValueManager(value, errors, createStore = _createStore, reducers = _reducers, middleware = _middleware) {
-
     if (!(this instanceof ReduxValueManager)) {
         return new ReduxValueManager(value, errors, createStore, reducers, middleware);
     }

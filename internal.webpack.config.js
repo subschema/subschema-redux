@@ -3,7 +3,8 @@ require('es6-promise').polyfill();
 var path = require('path');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
-var join = path.join.bind(path, __dirname);
+var cwd = path.join.bind(path, __dirname);
+var join = path.join.bind(path, __dirname, '..', 'subschema');
 var cssStr = 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss';
 
 function externs() {
@@ -183,6 +184,11 @@ function config(filename, externals, isNode, isMinify) {
         //       plugins.unshift(  new webpack.optimize.DedupePlugin(),new webpack.optimize.UglifyJsPlugin({minimize: true, output: {comments: false}}));
 
     }
+    conf.resolve.root = [
+        join('../subschema'),
+        cwd()
+    ];
+    conf.resolve.alias['ValueManager'] = cwd('src/ReduxValueManager.js');
     return conf;
 };
 
