@@ -36,14 +36,14 @@ const descend = (listen, v, ov, ...paths)=> {
     }
 };
 
-export default ({value, error, state, validate, submit})=>store=>next=> (action)=> {
+export default ({value, error, state, validate, submit, getValue, getError, getState})=>store=>next=> (action)=> {
     const {type, path, ...rest} = action;
     switch (type) {
         case UPDATE: {
 
-            const oldValue = store.getState().value;
+            const oldValue = getValue();
             next(action);
-            const curValue = store.getState().value;
+            const curValue = getValue();
 
             if (path == null) {
                 descend(paths=>value(curValue, oldValue, paths), curValue, oldValue);
@@ -58,9 +58,9 @@ export default ({value, error, state, validate, submit})=>store=>next=> (action)
             break;
         }
         case ERROR: {
-            const oldValue = store.getState().error;
+            const oldValue = getError();
             next(action);
-            const curValue = store.getState().error;
+            const curValue = getError();
             error(curValue, oldValue, path);
             if (path == null) {
                 return errored(next)(curValue, oldValue, path);
@@ -69,9 +69,9 @@ export default ({value, error, state, validate, submit})=>store=>next=> (action)
             break;
         }
         case STATE: {
-            const oldValue = store.getState().state;
+            const oldValue = getState();
             next(action);
-            const curValue = store.getState().state;
+            const curValue = getState();
 
             if (path == null) {
                 descend(paths=>value(curValue, oldValue, paths), curValue, oldValue);
@@ -85,13 +85,12 @@ export default ({value, error, state, validate, submit})=>store=>next=> (action)
             break;
         }
         case SUBMIT: {
-            const _state = store.getState();
-            submit(_state.value, _state.error, rest.event, path);
-
+            submit(getValue(), getError(), rest.event, path);
             break;
         }
         case VALIDATE: {
-            validate(store.getState().value, path)
+            validate(getValue(), path);
+
             break;
         }
 

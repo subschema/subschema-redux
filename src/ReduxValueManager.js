@@ -14,7 +14,7 @@ const {
     push,
     FREEZE_ARR
 } = tutils;
-const tpath  = tutils.path;
+const tpath = tutils.path;
 
 /**
  * Value manager listens and changes values on the objects.
@@ -101,20 +101,12 @@ export default function ReduxValueManager(value, errors, createStore = _createSt
         }
     });
 
-    const onChangeState = (state, oldValue, path)=> {
-        var parts = path && path.split('.') || [], i = 0, l = parts.length, pp = null;
-        do {
-            if (stateListeners.some((v)=> {
-                    if (v.path === pp) {
-                        return (v.listener.call(v.scope, value, path) === false);
-                    }
-                }, this) === true) {
-                return false
-            }
-            pp = tpath(pp, parts[i]);
-        } while (i++ < l);
-        return true;
-    };
+    const onChangeState = (state, oldValue, path)=> stateListeners.some((v)=> {
+        if (path == null || v.path == null || v.path === path || path.indexOf(v.path + '.') === 0) {
+            return (v.listener.call(v.scope, state && state[path], oldValue && oldValue[path], path, this.path(path)) === false);
+        }
+    });
+
     const onValidate = (value, path)=> {
 
         var pp = path && path + '.';
@@ -146,7 +138,11 @@ export default function ReduxValueManager(value, errors, createStore = _createSt
         error: onError,
         state: onChangeState,
         validate: onValidate,
-        submit: onSubmit
+        submit: onSubmit,
+        getValue: ()=>this.getState().value,
+        getState: ()=>this.getState().state,
+        getError: ()=>this.getState().error
+
     })));
 
     this.getState = store.getState.bind(store);
@@ -312,5 +308,9 @@ ReduxValueManager.prototype = {
         return submit(this.dispatch)(resolvedPath, errors, value, event);
 
     }
-}
-;
+};
+
+
+ReduxValueManager.reducers = _reducers;
+ReduxValueManager.middleware = _middleware;
+ReduxValueManager.createStore = _createStore;
