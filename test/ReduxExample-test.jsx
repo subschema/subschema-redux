@@ -1,13 +1,12 @@
 import {ValueManager, Form} from 'subschema';
 import React from 'react';
-import {into, TestUtils, expect, Simulate, byTag, byTags, byType, click} from "subschema-test-support";
-import {createStore as _createStore, combineReducers, applyMiddleware, compose} from 'redux'
+import {into} from "subschema-test-support";
 
 describe('Redux Example Usage', function () {
     this.timeout(50000);
 
 
-    it.only('should have an example', function () {
+    it('should have an example', function () {
         const createStore = (reducers, middleware)=> {
             const loggingReducer = (state = {}, action)=> {
                 console.log('action', action);
